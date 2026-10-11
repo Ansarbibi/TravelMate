@@ -1,0 +1,1 @@
+{"user_email":"test@gmail.com","days":5,"daily_cost":1000,"transport_cost":2000,"accommodation_cost":3000,"total_budget":10000}
