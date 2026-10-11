@@ -1,0 +1,3861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TravelMate - Smart Travel Planner</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f7f5ff;
+color:#22223b;
+padding-left:250px;
+}
+
+nav{
+position:fixed;
+left:0;
+top:0;
+width:240px;
+height:100vh;
+background:linear-gradient(180deg,#5b21b6,#7c3aed);
+padding:18px 12px;
+overflow-y:auto;
+z-index:1000;
+}
+
+.sidebar-brand{
+display:flex;
+align-items:center;
+gap:10px;
+padding:8px 8px 18px;
+margin-bottom:8px;
+border-bottom:1px solid rgba(255,255,255,.3);
+}
+
+.brand-logo{
+width:45px;
+height:45px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:white;
+border-radius:13px;
+font-size:23px;
+}
+
+.brand-title{
+color:white;
+font-size:21px;
+font-weight:bold;
+}
+
+.brand-subtitle{
+color:white;
+font-size:10px;
+opacity:.85;
+margin-top:3px;
+}
+
+nav button{
+width:100%;
+min-height:42px;
+padding:10px;
+margin:4px 0;
+border:none;
+border-radius:10px;
+background:white;
+color:#4c1d95;
+text-align:left;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+}
+
+nav button:hover{
+background:#ede9fe;
+color:#6d28d9;
+}
+
+header{
+background:linear-gradient(135deg,#6d28d9,#8b5cf6);
+color:white;
+text-align:center;
+padding:25px;
+}
+
+header h1{
+margin:0;
+font-size:30px;
+}
+
+header p{
+margin:8px 0 0;
+}
+
+.container{
+width:94%;
+max-width:1100px;
+margin:25px auto;
+}
+
+.card{
+background:white;
+padding:25px;
+margin-bottom:22px;
+border-radius:18px;
+box-shadow:0 8px 25px rgba(76,29,149,.10);
+}
+
+.card h2{
+color:#4c1d95;
+margin-top:0;
+}
+
+.card h3{
+color:#5b21b6;
+}
+
+input,
+select{
+width:100%;
+padding:12px;
+margin:7px 0 13px;
+border:1px solid #d8d3e8;
+border-radius:10px;
+background:white;
+font-size:14px;
+}
+
+input:focus,
+select:focus{
+outline:none;
+border-color:#7c3aed;
+}
+
+.main-btn{
+background:#6d28d9;
+color:white;
+padding:11px 20px;
+margin:5px 3px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.main-btn:hover{
+background:#5b21b6;
+}
+
+.edit-btn{
+background:#f59e0b;
+color:white;
+padding:8px 13px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.delete-btn{
+background:#dc2626;
+color:white;
+padding:8px 13px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.result{
+margin-top:15px;
+padding:15px;
+background:#f5f3ff;
+border-left:4px solid #7c3aed;
+border-radius:9px;
+}
+
+.trip-box,
+.expense-box{
+background:#faf9ff;
+border:1px solid #e5e0f5;
+padding:16px;
+margin:12px 0;
+border-radius:12px;
+}
+
+.dashboard-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+}
+
+.dashboard-box{
+background:#faf9ff;
+border:1px solid #e5e0f5;
+padding:20px;
+border-radius:12px;
+text-align:center;
+}
+
+.dashboard-number{
+font-size:28px;
+font-weight:bold;
+color:#6d28d9;
+}
+
+.profile-header{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.profile-icon{
+width:65px;
+height:65px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#ede9fe;
+color:#6d28d9;
+border-radius:50%;
+font-size:32px;
+}
+
+.auth-card{
+max-width:500px;
+margin:40px auto;
+}
+
+.auth-switch{
+margin-top:15px;
+}
+
+.auth-switch button{
+background:none;
+color:#6d28d9;
+border:none;
+cursor:pointer;
+}
+
+.hidden{
+display:none !important;
+}
+
+@media(max-width:768px){
+
+body{
+padding-left:190px;
+}
+
+nav{
+width:180px;
+}
+
+nav button{
+font-size:11px;
+padding:8px;
+}
+
+.brand-title{
+font-size:17px;
+}
+
+.brand-subtitle{
+font-size:8px;
+}
+
+.dashboard-grid{
+grid-template-columns:1fr;
+}
+
+header h1{
+font-size:23px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<div class="sidebar-brand">
+
+<div class="brand-logo">
+✈️
+</div>
+
+<div>
+
+<div class="brand-title">
+TravelMate
+</div>
+
+<div class="brand-subtitle">
+Smart Travel Planner
+</div>
+
+</div>
+
+</div>
+
+<button onclick="showSection('homeSection')">
+🏠 Home
+</button>
+
+<button onclick="showSection('registerSection')">
+📝 Register
+</button>
+
+<button onclick="showSection('loginSection')">
+🔐 Login
+</button>
+
+<button onclick="showSection('tripSection')">
+✈️ Create Trip
+</button>
+
+<button onclick="showSection('myTripsSection');loadTrips()">
+🧳 My Trips
+</button>
+
+<button onclick="showSection('budgetSection')">
+💰 Budget Estimator
+</button>
+
+<button onclick="showSection('allocationSection')">
+📊 Budget Allocation
+</button>
+
+<button onclick="showSection('transportSection')">
+🚗 Transportation
+</button>
+
+<button onclick="showSection('expenseSection');loadExpenses()">
+💸 Expenses
+</button>
+
+<button onclick="showSection('analysisSection');loadExpenseAnalysis()">
+📈 Expense Analysis
+</button>
+
+<button onclick="showSection('plannedActualSection');loadPlannedActual()">
+📋 Planned vs Actual
+</button>
+
+<button onclick="showSection('dashboardSection');loadDashboard()">
+    📊 Expense Dashboard
+</button>
+
+<button onclick="showSection('alertSection')">
+🚨 Budget Alerts
+</button>
+
+<button onclick="showSection('historySection');loadTripHistory()">
+🕘 Trip History
+</button>
+
+<button onclick="showProfile()">
+👤 Profile
+</button>
+
+</nav>
+
+<header>
+
+<h1>
+✈️ TravelMate
+</h1>
+
+<p>
+Smart Travel Planning & Expense Management
+</p>
+
+</header>
+
+<div class="container">
+
+    <!-- HOME SECTION -->
+
+<section id="homeSection" class="card">
+
+<h2>🏠 Welcome to TravelMate</h2>
+
+<p>
+Plan your trips, manage expenses, compare transportation,
+track budgets and maintain your travel history in one place.
+</p>
+
+<div class="dashboard-grid">
+
+<div class="dashboard-box">
+<div class="dashboard-number">✈️</div>
+<h3>Plan Trips</h3>
+<p>Create and manage your trips easily.</p>
+</div>
+
+<div class="dashboard-box">
+<div class="dashboard-number">💰</div>
+<h3>Manage Budget</h3>
+<p>Estimate and track your travel budget.</p>
+</div>
+
+<div class="dashboard-box">
+<div class="dashboard-number">💸</div>
+<h3>Track Expenses</h3>
+<p>Add and analyze your travel expenses.</p>
+</div>
+
+<div class="dashboard-box">
+<div class="dashboard-number">📊</div>
+<h3>Travel Analytics</h3>
+<p>View planned and actual expenses.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- REGISTER SECTION -->
+
+<section id="registerSection" class="card auth-card hidden">
+
+<h2>📝 Create Account</h2>
+
+<p>Create your TravelMate account first.</p>
+
+<label>Name</label>
+
+<input
+type="text"
+id="registerName"
+placeholder="Enter your name"
+>
+
+<label>Email</label>
+
+<input
+type="email"
+id="registerEmail"
+placeholder="Enter your email"
+>
+
+<label>Password</label>
+
+<input
+type="password"
+id="registerPassword"
+placeholder="Enter password"
+>
+
+<button
+class="main-btn"
+onclick="registerUser()"
+>
+Register
+</button>
+
+<div
+id="registerResult"
+class="result"
+>
+</div>
+
+<div class="auth-switch">
+
+Already registered?
+
+<button onclick="showSection('loginSection')">
+Login here
+</button>
+
+</div>
+
+</section>
+
+
+<!-- LOGIN SECTION -->
+
+<section id="loginSection" class="card auth-card hidden">
+
+<h2>🔐 Login</h2>
+
+<p>Login to continue to TravelMate.</p>
+
+<label>Email</label>
+
+<input
+type="email"
+id="loginEmail"
+placeholder="Enter your email"
+>
+
+<label>Password</label>
+
+<input
+type="password"
+id="loginPassword"
+placeholder="Enter password"
+>
+
+<button
+class="main-btn"
+onclick="loginUser()"
+>
+Login
+</button>
+
+<div
+id="loginResult"
+class="result"
+>
+</div>
+
+<div class="auth-switch">
+
+Don't have an account?
+
+<button onclick="showSection('registerSection')">
+Register here
+</button>
+
+</div>
+
+</section>
+
+
+<!-- CREATE TRIP SECTION -->
+
+<section id="tripSection" class="card hidden">
+
+<h2>✈️ Create Trip</h2>
+
+<input
+type="hidden"
+id="tripId"
+>
+
+<label>From</label>
+
+<input
+type="text"
+id="fromPlace"
+placeholder="Enter starting place"
+>
+
+<label>To</label>
+
+<input
+type="text"
+id="toPlace"
+placeholder="Enter destination"
+>
+
+<label>Start Date</label>
+
+<input
+type="date"
+id="startDate"
+>
+
+<label>End Date</label>
+
+<input
+type="date"
+id="endDate"
+>
+
+<label>Budget</label>
+
+<input
+type="number"
+id="tripBudget"
+placeholder="Enter trip budget"
+>
+
+<button
+class="main-btn"
+onclick="saveTrip()"
+>
+Create Trip
+</button>
+
+<button
+class="main-btn hidden"
+id="updateTripBtn"
+onclick="updateTrip()"
+>
+Update Trip
+</button>
+
+<button
+class="main-btn"
+onclick="clearTripForm()"
+>
+Clear
+</button>
+
+<div
+id="tripResult"
+class="result"
+>
+</div>
+
+</section>
+
+
+<!-- MY TRIPS SECTION -->
+
+<section id="myTripsSection" class="card hidden">
+
+<h2>🧳 My Trips</h2>
+
+<div id="tripsContainer">
+
+<p>No trips loaded.</p>
+
+</div>
+
+</section>
+
+
+<!-- BUDGET ESTIMATOR SECTION -->
+
+<section id="budgetSection" class="card hidden">
+
+<h2>💰 Budget Estimator</h2>
+
+<label>Number of Days</label>
+
+<input
+type="number"
+id="budgetDays"
+placeholder="Example: 5"
+>
+
+<label>Daily Cost</label>
+
+<input
+type="number"
+id="dailyCost"
+placeholder="Example: 1000"
+>
+
+<label>Transportation Cost</label>
+
+<input
+type="number"
+id="transportCost"
+placeholder="Example: 2000"
+>
+
+<label>Accommodation Cost</label>
+
+<input
+type="number"
+id="accommodationCost"
+placeholder="Example: 3000"
+>
+
+<button
+class="main-btn"
+onclick="calculateBudget()"
+>
+Calculate Budget
+</button>
+
+<div
+id="budgetResult"
+class="result"
+>
+</div>
+
+</section>
+
+   <!-- BUDGET ALLOCATION -->
+
+<section id="allocationSection" class="card hidden">
+
+<h2>📊 Budget Allocation</h2>
+
+<label>Total Budget</label>
+
+<input
+type="number"
+id="allocationBudget"
+placeholder="Enter total budget"
+>
+
+<label>Food Percentage</label>
+
+<input
+type="number"
+id="foodPercent"
+placeholder="Example: 30"
+>
+
+<label>Travel Percentage</label>
+
+<input
+type="number"
+id="travelPercent"
+placeholder="Example: 25"
+>
+
+<label>Accommodation Percentage</label>
+
+<input
+type="number"
+id="accommodationPercent"
+placeholder="Example: 30"
+>
+
+<label>Others Percentage</label>
+
+<input
+type="number"
+id="otherPercent"
+placeholder="Example: 15"
+>
+
+<button
+class="main-btn"
+onclick="calculateAllocation()"
+>
+Calculate Allocation
+</button>
+
+<div
+id="allocationResult"
+class="result"
+>
+</div>
+
+</section>
+
+
+<!-- TRANSPORTATION -->
+
+<section id="transportSection" class="card hidden">
+
+<h2>🚗 Transportation Comparison</h2>
+
+<label>Distance (KM)</label>
+
+<input
+type="number"
+id="distance"
+placeholder="Enter distance"
+>
+
+<button
+class="main-btn"
+onclick="compareTransport()"
+>
+Compare
+</button>
+
+<div
+id="transportResult"
+class="result"
+>
+</div>
+
+</section>
+
+
+<!-- EXPENSE SECTION -->
+
+<section id="expenseSection" class="card hidden">
+
+<h2>💸 Expenses</h2>
+
+<label>Expense Name</label>
+
+<input
+type="text"
+id="expenseName"
+placeholder="Example: Food"
+>
+
+<label>Category</label>
+
+<select id="expenseCategory">
+
+<option value="Food">Food</option>
+
+<option value="Travel">Travel</option>
+
+<option value="Accommodation">Accommodation</option>
+
+<option value="Shopping">Shopping</option>
+
+<option value="Others">Others</option>
+
+</select>
+
+<label>Amount</label>
+
+<input
+type="number"
+id="expenseAmount"
+placeholder="Enter amount"
+>
+
+<label>Expense Date</label>
+
+<input
+type="date"
+id="expenseDate"
+>
+
+<button
+class="main-btn"
+onclick="addExpense()"
+>
+Add Expense
+</button>
+
+<div
+id="expenseResult"
+class="result"
+>
+</div>
+
+<h3>My Expenses</h3>
+
+<div id="expenseList">
+
+<p>No expenses loaded.</p>
+
+</div>
+
+</section>
+
+
+<!-- EXPENSE ANALYSIS -->
+
+<section id="analysisSection" class="card hidden">
+
+    <h2>📈 Expense Analysis</h2>
+
+    <!-- TOTAL & HIGHEST EXPENSE -->
+    <div class="dashboard-grid">
+
+        <div class="dashboard-box">
+            <h3>Total Expense</h3>
+
+            <div
+                id="analysisTotal"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+        </div>
+
+
+        <div class="dashboard-box">
+            <h3>Highest Expense</h3>
+
+            <div
+                id="analysisHighest"
+                class="dashboard-number"
+            >
+                No expenses
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY WISE EXPENSES -->
+
+    <div
+        id="analysisResult"
+        class="result"
+    >
+    </div>
+
+</section>
+
+
+<!-- PLANNED VS ACTUAL -->
+
+<section id="plannedActualSection" class="card hidden">
+
+<h2>📋 Planned vs Actual</h2>
+
+<label>Planned Budget</label>
+
+<input
+type="number"
+id="plannedAmount"
+placeholder="Enter planned amount"
+>
+
+<label>Actual Expense</label>
+
+<input
+type="number"
+id="actualAmount"
+placeholder="Enter actual expense"
+>
+
+<button
+class="main-btn"
+onclick="calculatePlannedActual()"
+>
+Compare
+</button>
+
+<div
+id="plannedActualResult"
+class="result"
+>
+</div>
+
+</section>
+
+
+  <!-- EXPENSE DASHBOARD -->
+
+<section id="dashboardSection" class="card hidden">
+
+    <h2>📊 Expense Dashboard</h2>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-box">
+
+            <h3>💰 Total Expense</h3>
+
+            <div
+                id="dashboardTotalExpense"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-box">
+
+            <h3>🔝 Highest Expense</h3>
+
+            <div
+                id="dashboardHighestExpense"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-box">
+
+            <h3>🍴 Food</h3>
+
+            <div
+                id="dashboardFoodExpense"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-box">
+
+            <h3>🚌 Travel</h3>
+
+            <div
+                id="dashboardTravelExpense"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-box">
+
+            <h3>🏨 Accommodation</h3>
+
+            <div
+                id="dashboardAccommodationExpense"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-box">
+
+            <h3>🛍️ Shopping</h3>
+
+            <div
+                id="dashboardShoppingExpense"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-box">
+
+            <h3>📦 Others</h3>
+
+            <div
+                id="dashboardOthersExpense"
+                class="dashboard-number"
+            >
+                ₹0
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        id="dashboardResult"
+        class="result"
+    >
+    </div>
+
+</section>
+
+
+<!-- BUDGET ALERTS -->
+
+<section id="alertSection" class="card hidden">
+
+<h2>🚨 Budget Alerts</h2>
+
+<label>Total Budget</label>
+
+<input
+type="number"
+id="alertBudget"
+placeholder="Enter total budget"
+>
+
+<label>Current Expenses</label>
+
+<input
+type="number"
+id="alertExpenses"
+placeholder="Enter expenses"
+>
+
+<button
+class="main-btn"
+onclick="checkBudgetAlert()"
+>
+Check Budget
+</button>
+
+<div
+id="alertResult"
+class="result"
+>
+</div>
+
+</section>
+
+
+<!-- TRIP HISTORY -->
+
+<section id="historySection" class="card hidden">
+
+<h2>🕘 Trip History</h2>
+
+<div id="tripHistoryContainer">
+
+<p>Trip history will appear here.</p>
+
+</div>
+
+</section>
+
+
+  <!-- PROFILE -->
+
+<section id="profileSection" class="card hidden">
+
+<div class="profile-header">
+
+<div class="profile-icon">
+👤
+</div>
+
+<div>
+
+<h2>My Profile</h2>
+
+<p>
+Manage your TravelMate profile
+</p>
+
+</div>
+
+</div>
+
+<label>Name</label>
+
+<input
+type="text"
+id="profileName"
+placeholder="Enter your name"
+>
+
+<label>Email</label>
+
+<input
+type="email"
+id="profileEmail"
+placeholder="Email"
+>
+
+<label>Phone</label>
+
+<input
+type="text"
+id="profilePhone"
+placeholder="Enter phone number"
+>
+
+<button
+class="main-btn"
+onclick="updateProfile()"
+>
+Update Profile
+</button>
+
+<button
+class="main-btn"
+onclick="logoutUser()"
+>
+Logout
+</button>
+
+<div
+id="profileResult"
+class="result"
+>
+</div>
+
+</section>
+
+<script>
+
+const BASE_URL = "http://localhost/TravelMate/backend/";
+
+function getCurrentUser(){
+
+    return localStorage.getItem("currentUser");
+
+}
+
+
+function showSection(sectionId){
+
+    const sections = document.querySelectorAll("section");
+
+    sections.forEach(function(section){
+
+        section.classList.add("hidden");
+
+    });
+
+    const selected =
+        document.getElementById(sectionId);
+
+    if(selected){
+
+        selected.classList.remove("hidden");
+
+    }
+
+}
+
+/* REGISTER */
+
+async function registerUser(){
+
+    const name =
+        document.getElementById("registerName").value.trim();
+
+    const email =
+        document.getElementById("registerEmail").value.trim();
+
+    const password =
+        document.getElementById("registerPassword").value.trim();
+
+    const result =
+        document.getElementById("registerResult");
+
+    if(name === "" || email === "" || password === ""){
+
+        result.innerHTML =
+            "Please fill all fields.";
+
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "register.php",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if(data.success){
+
+            result.innerHTML =
+                "Registration successful. Please login.";
+
+            document.getElementById("loginEmail").value =
+                email;
+
+            document.getElementById("registerName").value =
+                "";
+
+            document.getElementById("registerEmail").value =
+                "";
+
+            document.getElementById("registerPassword").value =
+                "";
+
+            setTimeout(function(){
+
+                showSection("loginSection");
+
+            }, 1000);
+
+        }
+        else{
+
+            result.innerHTML =
+                data.message || "Registration failed.";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        result.innerHTML =
+            "Registration failed. Check XAMPP and PHP.";
+
+    }
+
+}
+
+/* LOGIN */
+
+async function loginUser(){
+
+    const email =
+        document.getElementById("loginEmail").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value.trim();
+
+    const result =
+        document.getElementById("loginResult");
+
+
+    if(email === "" || password === ""){
+
+        result.innerHTML =
+            "Please enter email and password.";
+
+        return;
+
+    }
+
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "Login.php",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    email:email,
+
+                    password:password
+
+                })
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if(data.success){
+
+            localStorage.setItem(
+                "currentUser",
+                email
+            );
+
+            localStorage.setItem(
+                "userEmail",
+                email
+            );
+
+
+            result.innerHTML =
+                "Login successful.";
+
+
+            setTimeout(function(){
+
+                showSection("homeSection");
+
+            },700);
+
+        }
+        else{
+
+            result.innerHTML =
+                data.message || "Invalid login details.";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        result.innerHTML =
+            "Login failed. Check XAMPP and backend.";
+
+    }
+
+}
+
+
+/* LOGOUT */
+
+function logoutUser(){
+
+    localStorage.removeItem("currentUser");
+
+    localStorage.removeItem("userEmail");
+
+    showSection("loginSection");
+
+}
+
+   /* CREATE TRIP */
+
+async function saveTrip(){
+
+    const fromPlace =
+        document.getElementById("fromPlace").value.trim();
+
+    const toPlace =
+        document.getElementById("toPlace").value.trim();
+
+    const startDate =
+        document.getElementById("startDate").value;
+
+    const endDate =
+        document.getElementById("endDate").value;
+
+    const budget =
+        Number(
+            document.getElementById("tripBudget").value
+        );
+
+    const result =
+        document.getElementById("tripResult");
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+
+        result.innerHTML =
+            "Please login first.";
+
+        return;
+    }
+
+    if(
+        fromPlace === "" ||
+        toPlace === "" ||
+        startDate === "" ||
+        endDate === "" ||
+        budget <= 0
+    ){
+
+        result.innerHTML =
+            "Please fill all fields.";
+
+        return;
+    }
+
+    if(endDate < startDate){
+
+        result.innerHTML =
+            "End date must be after start date.";
+
+        return;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                BASE_URL + "CreateTrip.php",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        user_email:userEmail,
+
+                        start_place:fromPlace,
+
+                        destination:toPlace,
+
+                        start_date:startDate,
+
+                        end_date:endDate,
+
+                        budget:budget
+
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(data.success){
+
+            result.innerHTML =
+                "Trip created successfully.";
+
+            document.getElementById(
+                "fromPlace"
+            ).value = "";
+
+            document.getElementById(
+                "toPlace"
+            ).value = "";
+
+            document.getElementById(
+                "startDate"
+            ).value = "";
+
+            document.getElementById(
+                "endDate"
+            ).value = "";
+
+            document.getElementById(
+                "tripBudget"
+            ).value = "";
+
+            loadTrips();
+
+        }
+        else{
+
+            result.innerHTML =
+                data.message ||
+                "Trip creation failed.";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        result.innerHTML =
+            "Trip creation failed. Check backend.";
+
+    }
+
+}
+
+
+/* CLEAR TRIP FORM */
+
+function clearTripForm(){
+
+    document.getElementById("fromPlace").value = "";
+
+    document.getElementById("toPlace").value = "";
+
+    document.getElementById("startDate").value = "";
+
+    document.getElementById("endDate").value = "";
+
+    document.getElementById("tripBudget").value = "";
+
+    document.getElementById("tripResult").innerHTML = "";
+
+}
+
+
+/* LOAD MY TRIPS */
+
+async function loadTrips(){
+
+    const userEmail = getCurrentUser();
+
+    const tripsContainer =
+        document.getElementById("tripsContainer");
+
+    if(!tripsContainer){
+        return;
+    }
+
+    if(!userEmail){
+
+        tripsContainer.innerHTML =
+            "<p>Please login first.</p>";
+
+        return;
+    }
+
+    tripsContainer.innerHTML =
+        "<p>Loading trips...</p>";
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getTrips.php?user_email=" +
+            encodeURIComponent(userEmail)
+        );
+
+        const data = await response.json();
+
+        let trips = data;
+
+        if(data.trips){
+            trips = data.trips;
+        }
+
+        if(!Array.isArray(trips)){
+            trips = [];
+        }
+
+        if(trips.length === 0){
+
+            tripsContainer.innerHTML =
+                "<p>No trips found.</p>";
+
+            return;
+        }
+
+        let html = "";
+
+        trips.forEach(function(trip){
+
+            const tripId =
+                trip.id || trip.trip_id;
+
+            const startPlace =
+                trip.start_place ||
+                trip.from_place ||
+                "";
+
+            const destination =
+                trip.destination ||
+                trip.to_place ||
+                "";
+
+            const startDate =
+                trip.start_date || "";
+
+            const endDate =
+                trip.end_date || "";
+
+            const budget =
+                Number(trip.budget || 0);
+
+            html += `
+
+                <div class="trip-box">
+
+                    <h3>
+                        ✈️ ${startPlace}
+                        →
+                        ${destination}
+                    </h3>
+
+                    <p>
+                        Start Date:
+                        ${startDate}
+                    </p>
+
+                    <p>
+                        End Date:
+                        ${endDate}
+                    </p>
+
+                    <p>
+                        Budget:
+                        ₹${budget.toFixed(2)}
+                    </p>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editTrip(${tripId})"
+                    >
+                        ✏️ Update
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteTrip('${tripId}')"
+                    >
+                        🗑️ Delete
+                    </button>
+
+                </div>
+
+            `;
+
+        });
+
+        tripsContainer.innerHTML = html;
+
+    }
+    catch(error){
+
+        console.error(
+            "Load Trips Error:",
+            error
+        );
+
+        tripsContainer.innerHTML =
+            "<p>Unable to load trips.</p>";
+
+    }
+
+}
+
+     /* DELETE TRIP */
+
+async function deleteTrip(tripId){
+
+    if(!tripId){
+
+        alert("Trip ID is missing.");
+
+        return;
+    }
+
+    if(!confirm("Are you sure you want to delete this trip?")){
+
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "deleteTrip.php",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    trip_id:tripId
+
+                })
+            }
+        );
+
+        const data =
+            await response.json();
+
+        if(data.success){
+
+            alert(
+                "Trip deleted successfully."
+            );
+
+            loadTrips();
+
+        }
+        else{
+
+            alert(
+                data.message ||
+                "Trip delete failed."
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Delete Trip Error:",
+            error
+        );
+
+        alert(
+            "Trip delete failed. Check backend."
+        );
+
+    }
+
+}
+
+/* UPDATE TRIP */
+
+async function updateTrip(){
+
+    const tripId =
+        document.getElementById("tripId").value;
+
+    const startPlace =
+        document.getElementById("fromPlace").value.trim();
+
+    const destination =
+        document.getElementById("toPlace").value.trim();
+
+    const startDate =
+        document.getElementById("startDate").value;
+
+    const endDate =
+        document.getElementById("endDate").value;
+
+    const budget =
+        Number(
+            document.getElementById("tripBudget").value
+        );
+
+    const result =
+        document.getElementById("tripResult");
+
+    if(!tripId){
+
+        result.innerHTML =
+            "Trip ID is missing.";
+
+        return;
+    }
+
+    if(
+        startPlace === "" ||
+        destination === "" ||
+        startDate === "" ||
+        endDate === "" ||
+        budget <= 0
+    ){
+
+        result.innerHTML =
+            "Please fill all trip fields.";
+
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "UpdateTrip.php",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    id:tripId,
+
+                    start_place:startPlace,
+
+                    destination:destination,
+
+                    start_date:startDate,
+
+                    end_date:endDate,
+
+                    budget:budget
+
+                })
+            }
+        );
+
+        const data =
+            await response.json();
+
+        if(data.success){
+
+            result.innerHTML =
+                "Trip updated successfully.";
+
+            document.getElementById("tripId").value = "";
+
+            document.getElementById("updateTripBtn")
+                .classList.add("hidden");
+
+            loadTrips();
+
+        }
+        else{
+
+            result.innerHTML =
+                data.message ||
+                "Trip update failed.";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Update Trip Error:",
+            error
+        );
+
+        result.innerHTML =
+            "Trip update failed. Check backend.";
+
+    }
+
+}
+
+/* EDIT TRIP */
+
+async function editTrip(tripId){
+
+    if(!tripId){
+
+        alert("Trip ID is missing.");
+
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getTrip.php?id=" +
+            encodeURIComponent(tripId)
+        );
+
+        const data =
+            await response.json();
+
+        let trip = data;
+
+        if(data.trip){
+            trip = data.trip;
+        }
+
+        if(Array.isArray(trip)){
+            trip = trip[0];
+        }
+
+        if(!trip){
+
+            alert("Trip not found.");
+
+            return;
+        }
+
+        document.getElementById("tripId").value =
+            trip.id || trip.trip_id || "";
+
+        document.getElementById("fromPlace").value =
+            trip.start_place ||
+            trip.from_place ||
+            "";
+
+        document.getElementById("toPlace").value =
+            trip.destination ||
+            trip.to_place ||
+            "";
+
+        document.getElementById("startDate").value =
+            trip.start_date || "";
+
+        document.getElementById("endDate").value =
+            trip.end_date || "";
+
+        document.getElementById("tripBudget").value =
+            trip.budget || "";
+
+        showSection("tripSection");
+
+        const updateButton =
+            document.getElementById("updateTripBtn");
+
+        if(updateButton){
+            updateButton.classList.remove("hidden");
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Edit Trip Error:",
+            error
+        );
+
+        alert(
+            "Unable to load trip details."
+        );
+
+    }
+
+}
+                       
+
+
+     /* ADD EXPENSE */
+
+async function addExpense(){
+
+    const name =
+        document.getElementById("expenseName").value.trim();
+
+    const category =
+        document.getElementById("expenseCategory").value;
+
+    const amount =
+        Number(document.getElementById("expenseAmount").value);
+
+    const date =
+        document.getElementById("expenseDate").value;
+
+    const result =
+        document.getElementById("expenseResult");
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+
+        result.innerHTML =
+            "Please login first.";
+
+        return;
+
+    }
+
+    if(
+        name === "" ||
+        category === "" ||
+        amount <= 0 ||
+        date === ""
+    ){
+
+        result.innerHTML =
+            "Please fill all expense fields.";
+
+        return;
+
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "addExpense.php",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+
+                    user_email:userEmail,
+
+                    expense_name:name,
+
+                    category:category,
+
+                    amount:amount,
+
+                    expense_date:date
+
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if(data.success){
+
+            result.innerHTML =
+                "Expense added successfully.";
+
+            document.getElementById("expenseName").value = "";
+            document.getElementById("expenseAmount").value = "";
+            document.getElementById("expenseDate").value = "";
+
+            loadExpenses();
+            loadExpenseAnalysis();
+
+        }
+        else{
+
+            result.innerHTML =
+                data.message ||
+                "Failed to add expense.";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        result.innerHTML =
+            "Expense failed. Check backend.";
+
+    }
+
+}
+
+
+    /* LOAD EXPENSES */
+
+async function loadExpenses(){
+
+    const container =
+        document.getElementById("expenseList");
+
+    if(!container){
+        return;
+    }
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+
+        container.innerHTML =
+            "<p>Please login first.</p>";
+
+        return;
+    }
+
+    container.innerHTML =
+        "<p>Loading expenses...</p>";
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getExpenses.php?user_email=" +
+            encodeURIComponent(userEmail)
+        );
+
+        const data =
+            await response.json();
+
+        let expenses = data;
+
+        if(data.expenses){
+            expenses = data.expenses;
+        }
+
+        if(!Array.isArray(expenses)){
+            expenses = [];
+        }
+
+        if(expenses.length === 0){
+
+            container.innerHTML =
+                "<p>No expenses found.</p>";
+
+            return;
+        }
+
+        let html = "";
+
+        expenses.forEach(function(expense){
+
+            html += `
+
+                <div class="expense-box">
+
+                    <div>
+
+                        <strong>
+                            ${expense.expense_name || ""}
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            ${expense.category || ""}
+                            |
+                            ${expense.expense_date || ""}
+                        </small>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            ₹${Number(
+                                expense.amount || 0
+                            ).toFixed(2)}
+                        </strong>
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteExpense(${expense.id})"
+                        >
+                            🗑️
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+        container.innerHTML = html;
+
+    }
+    catch(error){
+
+        console.error(
+            "Load Expenses Error:",
+            error
+        );
+
+        container.innerHTML =
+            "<p>Unable to load expenses.</p>";
+
+    }
+
+}
+   /* DELETE EXPENSE */
+
+    async function deleteExpense(expenseId){
+
+    if(!expenseId){
+
+        alert("Expense ID is missing.");
+
+        return;
+    }
+
+    if(!confirm("Are you sure you want to delete this expense?")){
+
+        return;
+    }
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+
+        alert("Please login first.");
+
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "deleteExpense.php",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    id:expenseId,
+
+                    user_email:userEmail
+
+                })
+            }
+        );
+
+        const data =
+            await response.json();
+
+        if(data.success){
+
+            alert(
+                "Expense deleted successfully."
+            );
+
+            loadExpenses();
+
+            loadExpenseAnalysis();
+
+            loadExpenseDashboard();
+
+        }
+        else{
+
+            alert(
+                data.message ||
+                "Expense delete failed."
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Delete Expense Error:",
+            error
+        );
+
+        alert(
+            "Expense delete failed. Check backend."
+        );
+
+    }
+
+}
+
+
+    /* EXPENSE ANALYSIS */
+
+async function loadExpenseAnalysis(){
+
+    const totalElement =
+        document.getElementById("analysisTotal");
+
+    const highestElement =
+        document.getElementById("analysisHighest");
+
+    const resultElement =
+        document.getElementById("analysisResult");
+
+
+    if(!totalElement || !highestElement || !resultElement){
+
+        return;
+
+    }
+
+
+    const userEmail =
+        getCurrentUser();
+
+
+    if(!userEmail){
+
+        totalElement.innerHTML = "₹0";
+
+        highestElement.innerHTML =
+            "Please login first.";
+
+        resultElement.innerHTML = "";
+
+        return;
+
+    }
+
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getExpenses.php?user_email=" +
+            encodeURIComponent(userEmail)
+        );
+
+
+        const data =
+            await response.json();
+
+
+        let expenses = data;
+
+
+        if(data.expenses){
+
+            expenses = data.expenses;
+
+        }
+
+
+        if(!Array.isArray(expenses)){
+
+            expenses = [];
+
+        }
+
+
+        /* TOTAL EXPENSE */
+
+        let total = 0;
+
+
+        /* HIGHEST EXPENSE */
+
+        let highestExpense = null;
+
+
+        /* CATEGORY GROUPS */
+
+        const categories = {};
+
+
+        expenses.forEach(function(expense){
+
+            const amount =
+                Number(expense.amount || 0);
+
+
+            const expenseName =
+                expense.expense_name ||
+                "Expense";
+
+
+            const category =
+                String(
+                    expense.category || "Others"
+                ).trim();
+
+
+            /* TOTAL */
+
+            total += amount;
+
+
+            /* HIGHEST */
+
+            if(
+                !highestExpense ||
+                amount >
+                Number(highestExpense.amount || 0)
+            ){
+
+                highestExpense = expense;
+
+            }
+
+
+            /* CATEGORY */
+
+            if(!categories[category]){
+
+                categories[category] = [];
+
+            }
+
+
+            categories[category].push({
+
+                name: expenseName,
+
+                amount: amount
+
+            });
+
+        });
+
+
+        /* SHOW TOTAL */
+
+        totalElement.innerHTML =
+            "₹" + total.toFixed(2);
+
+
+        /* SHOW HIGHEST */
+
+        if(highestExpense){
+
+            highestElement.innerHTML =
+                (highestExpense.expense_name ||
+                "Expense")
+                +
+                " — ₹"
+                +
+                Number(
+                    highestExpense.amount || 0
+                ).toFixed(2);
+
+        }
+        else{
+
+            highestElement.innerHTML =
+                "No expenses";
+
+        }
+
+
+        /* CATEGORY DISPLAY */
+
+        resultElement.innerHTML = "";
+
+
+        const categoryNames =
+            Object.keys(categories);
+
+
+        if(categoryNames.length === 0){
+
+            resultElement.innerHTML =
+                "<p>No expenses added yet.</p>";
+
+            return;
+
+        }
+
+
+        categoryNames.forEach(function(category){
+
+            const categoryBox =
+                document.createElement("div");
+
+
+            categoryBox.className =
+                "dashboard-box";
+
+
+            const heading =
+                document.createElement("h3");
+
+
+            heading.innerHTML =
+                "📂 " + category;
+
+
+            categoryBox.appendChild(heading);
+
+
+            categories[category].forEach(
+                function(item){
+
+                    const expenseLine =
+                        document.createElement("p");
+
+
+                    expenseLine.innerHTML =
+                        item.name +
+                        " — ₹" +
+                        item.amount.toFixed(2);
+
+
+                    categoryBox.appendChild(
+                        expenseLine
+                    );
+
+                }
+            );
+
+
+            resultElement.appendChild(
+                categoryBox
+            );
+
+        });
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Expense Analysis Error:",
+            error
+        );
+             
+             }
+
+            }
+
+   /* BUDGET ESTIMATOR */
+
+async function calculateBudget(){
+
+    const days =
+        Number(document.getElementById("budgetDays").value);
+
+    const dailyCost =
+        Number(document.getElementById("dailyCost").value);
+
+    const transportCost =
+        Number(document.getElementById("transportCost").value);
+
+    const accommodationCost =
+        Number(
+            document.getElementById("accommodationCost").value
+        );
+
+    const result =
+        document.getElementById("budgetResult");
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+
+        result.innerHTML =
+            "Please login first.";
+
+        return;
+
+    }
+
+    if(
+        days <= 0 ||
+        dailyCost < 0 ||
+        transportCost < 0 ||
+        accommodationCost < 0
+    ){
+
+        result.innerHTML =
+            "Please enter valid values.";
+
+        return;
+
+    }
+
+    const totalBudget =
+        (days * dailyCost) +
+        transportCost +
+        accommodationCost;
+
+    result.innerHTML =
+        "Estimated Budget: ₹" +
+        totalBudget.toFixed(2);
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "saveBudget.php",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    user_email:userEmail,
+
+                    days:days,
+
+                    daily_cost:dailyCost,
+
+                    transport_cost:transportCost,
+
+                    accommodation_cost:accommodationCost,
+
+                    total_budget:totalBudget
+
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+    /* BUDGET ALLOCATION */
+
+function calculateAllocation(){
+
+    const totalBudget =
+        Number(
+            document.getElementById("allocationBudget").value
+        );
+
+    const foodPercent =
+        Number(
+            document.getElementById("foodPercent").value
+        );
+
+    const travelPercent =
+        Number(
+            document.getElementById("travelPercent").value
+        );
+
+    const accommodationPercent =
+        Number(
+            document.getElementById(
+                "accommodationPercent"
+            ).value
+        );
+
+    const otherPercent =
+        Number(
+            document.getElementById("otherPercent").value
+        );
+
+    const result =
+        document.getElementById("allocationResult");
+
+    if(totalBudget <= 0){
+
+        result.innerHTML =
+            "Please enter total budget.";
+
+        return;
+
+    }
+
+    const totalPercent =
+        foodPercent +
+        travelPercent +
+        accommodationPercent +
+        otherPercent;
+
+    if(totalPercent !== 100){
+
+        result.innerHTML =
+            "Total percentage must be 100%.";
+
+        return;
+
+    }
+
+    const foodAmount =
+        totalBudget * foodPercent / 100;
+
+    const travelAmount =
+        totalBudget * travelPercent / 100;
+
+    const accommodationAmount =
+        totalBudget *
+        accommodationPercent / 100;
+
+    const otherAmount =
+        totalBudget * otherPercent / 100;
+
+    result.innerHTML = `
+
+        <div class="allocation-box">
+
+            <p>
+                🍴 Food:
+                <strong>
+                    ₹${foodAmount.toFixed(2)}
+                </strong>
+            </p>
+
+            <p>
+                🚌 Travel:
+                <strong>
+                    ₹${travelAmount.toFixed(2)}
+                </strong>
+            </p>
+
+            <p>
+                🏨 Accommodation:
+                <strong>
+                    ₹${accommodationAmount.toFixed(2)}
+                </strong>
+            </p>
+
+            <p>
+                📦 Others:
+                <strong>
+                    ₹${otherAmount.toFixed(2)}
+                </strong>
+            </p>
+
+        </div>
+
+    `;
+
+}
+   
+     /* TRANSPORTATION COMPARISON */
+
+function compareTransport(){
+
+    const distance =
+        Number(
+            document.getElementById("distance").value
+        );
+
+    const result =
+        document.getElementById("transportResult");
+
+    if(distance <= 0){
+
+        result.innerHTML =
+            "Please enter valid distance.";
+
+        return;
+    }
+
+    const options = [
+
+        {
+            name: "🚌 Bus",
+            price: distance * 2
+        },
+
+        {
+            name: "🚆 Train",
+            price: distance * 1.5
+        },
+
+        {
+            name: "🚗 Car",
+            price: distance * 8
+        },
+
+        {
+            name: "✈️ Flight",
+            price: distance * 10
+        }
+
+    ];
+
+    let html = "";
+
+    options.forEach(function(option){
+
+        html += `
+
+            <div class="transport-card">
+
+                <h3>
+                    ${option.name}
+                </h3>
+
+                <p>
+                    Distance: ${distance} KM
+                </p>
+
+                <strong>
+                    ₹${option.price.toFixed(2)}
+                </strong>
+
+            </div>
+
+        `;
+
+    });
+
+    const cheapest =
+        options.reduce(function(previous, current){
+
+            return current.price < previous.price
+                ? current
+                : previous;
+
+        });
+
+    html += `
+
+        <div class="success-box">
+
+            <strong>
+                Cheapest Option:
+            </strong>
+
+            ${cheapest.name}
+            — ₹${cheapest.price.toFixed(2)}
+
+        </div>
+
+    `;
+
+    result.innerHTML = html;
+
+}
+
+
+/* PLANNED VS ACTUAL */
+
+function calculatePlannedActual(){
+
+    const planned =
+        Number(
+            document.getElementById("plannedAmount").value
+        );
+
+    const actual =
+        Number(
+            document.getElementById("actualAmount").value
+        );
+
+    const result =
+        document.getElementById("plannedActualResult");
+
+    if(planned <= 0 || actual < 0){
+
+        result.innerHTML =
+            "Please enter valid amounts.";
+
+        return;
+
+    }
+
+    const difference =
+        actual - planned;
+
+    if(difference > 0){
+
+        result.innerHTML = `
+
+            <div class="danger-box">
+
+                <h3>
+                    ⚠️ Budget Exceeded
+                </h3>
+
+                <p>
+                    Planned:
+                    ₹${planned.toFixed(2)}
+                </p>
+
+                <p>
+                    Actual:
+                    ₹${actual.toFixed(2)}
+                </p>
+
+                <p>
+                    Exceeded By:
+                    <strong>
+                        ₹${difference.toFixed(2)}
+                    </strong>
+                </p>
+
+            </div>
+
+        `;
+
+    }
+    else if(difference < 0){
+
+        result.innerHTML = `
+
+            <div class="success-box">
+
+                <h3>
+                    ✅ Within Budget
+                </h3>
+
+                <p>
+                    Planned:
+                    ₹${planned.toFixed(2)}
+                </p>
+
+                <p>
+                    Actual:
+                    ₹${actual.toFixed(2)}
+                </p>
+
+                <p>
+                    Saved:
+                    <strong>
+                        ₹${Math.abs(difference).toFixed(2)}
+                    </strong>
+                </p>
+
+            </div>
+
+        `;
+
+    }
+    else{
+
+        result.innerHTML = `
+
+            <div class="info-box">
+
+                <h3>
+                    ➖ Budget Exactly Used
+                </h3>
+
+                <p>
+                    Planned and actual amount are equal.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+   
+    /* EXPENSE DASHBOARD */
+
+   async function loadExpenseDashboard(){
+
+    const totalElement =
+        document.getElementById("dashboardTotalExpense");
+
+    const highestElement =
+        document.getElementById("dashboardHighestExpense");
+
+    const foodElement =
+        document.getElementById("dashboardFoodExpense");
+
+    const travelElement =
+        document.getElementById("dashboardTravelExpense");
+
+    const accommodationElement =
+        document.getElementById("dashboardAccommodationExpense");
+
+    const shoppingElement =
+        document.getElementById("dashboardShoppingExpense");
+
+    const othersElement =
+        document.getElementById("dashboardOthersExpense");
+
+    if(!totalElement){
+        return;
+    }
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getExpenses.php?user_email=" +
+            encodeURIComponent(userEmail)
+        );
+
+        const data = await response.json();
+
+        let expenses = data;
+
+        if(data.expenses){
+            expenses = data.expenses;
+        }
+
+        if(!Array.isArray(expenses)){
+            expenses = [];
+        }
+
+        let total = 0;
+
+        let food = 0;
+        let travel = 0;
+        let accommodation = 0;
+        let shopping = 0;
+        let others = 0;
+
+        let highestExpense = null;
+
+        expenses.forEach(function(expense){
+
+            const amount =
+                Number(expense.amount || 0);
+
+            const category =
+                String(expense.category || "")
+                .trim()
+                .toLowerCase();
+
+            total += amount;
+
+            if(
+                !highestExpense ||
+                amount > Number(highestExpense.amount || 0)
+            ){
+
+                highestExpense = expense;
+
+            }
+
+            if(category === "food"){
+
+                food += amount;
+
+            }
+            else if(category === "travel"){
+
+                travel += amount;
+
+            }
+            else if(
+                category === "accommodation"
+            ){
+
+                accommodation += amount;
+
+            }
+            else if(category === "shopping"){
+
+                shopping += amount;
+
+            }
+            else{
+
+                others += amount;
+
+            }
+
+        });
+
+        /* TOTAL */
+
+        totalElement.innerHTML =
+            "₹" + total.toFixed(2);
+
+
+        /* HIGHEST EXPENSE */
+
+        if(highestElement){
+
+            if(highestExpense){
+
+                highestElement.innerHTML =
+                    (highestExpense.expense_name || "Expense")
+                    + " — ₹"
+                    + Number(
+                        highestExpense.amount || 0
+                    ).toFixed(2);
+
+            }
+            else{
+
+                highestElement.innerHTML =
+                    "₹0.00";
+
+            }
+
+        }
+
+
+        /* FOOD */
+
+        if(foodElement){
+
+            foodElement.innerHTML =
+                "₹" + food.toFixed(2);
+
+        }
+
+
+        /* TRAVEL */
+
+        if(travelElement){
+
+            travelElement.innerHTML =
+                "₹" + travel.toFixed(2);
+
+        }
+
+
+        /* ACCOMMODATION */
+
+        if(accommodationElement){
+
+            accommodationElement.innerHTML =
+                "₹" + accommodation.toFixed(2);
+
+        }
+
+
+        /* SHOPPING */
+
+        if(shoppingElement){
+
+            shoppingElement.innerHTML =
+                "₹" + shopping.toFixed(2);
+
+        }
+
+
+        /* OTHERS */
+
+        if(othersElement){
+
+            othersElement.innerHTML =
+                "₹" + others.toFixed(2);
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Expense Dashboard Error:",
+            error
+        );
+
+    }
+
+}
+
+      
+     /* BUDGET ALERTS */
+
+async function checkBudgetAlert(){
+
+    const budgetInput =
+        document.getElementById("alertBudget");
+
+    const result =
+        document.getElementById("alertResult");
+
+    if(!budgetInput || !result){
+        return;
+    }
+
+    const budget =
+        Number(budgetInput.value);
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+
+        result.innerHTML =
+            "Please login first.";
+
+        return;
+    }
+
+    if(budget <= 0){
+
+        result.innerHTML =
+            "Please enter a valid budget.";
+
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getExpenses.php?user_email=" +
+            encodeURIComponent(userEmail)
+        );
+
+        const data = await response.json();
+
+        let expenses = data;
+
+        if(data.expenses){
+            expenses = data.expenses;
+        }
+
+        if(!Array.isArray(expenses)){
+            expenses = [];
+        }
+
+        let totalExpense = 0;
+
+        expenses.forEach(function(expense){
+
+            totalExpense += Number(
+                expense.amount || 0
+            );
+
+        });
+
+        const remaining =
+            budget - totalExpense;
+
+        if(remaining < 0){
+
+            result.innerHTML = `
+
+                <div class="danger-box">
+
+                    <h3>🚨 Budget Exceeded</h3>
+
+                    <p>
+                        Budget:
+                        ₹${budget.toFixed(2)}
+                    </p>
+
+                    <p>
+                        Expenses:
+                        ₹${totalExpense.toFixed(2)}
+                    </p>
+
+                    <p>
+                        Exceeded By:
+                        <strong>
+                            ₹${Math.abs(remaining).toFixed(2)}
+                        </strong>
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+        else if(remaining <= budget * 0.2){
+
+            result.innerHTML = `
+
+                <div class="warning-box">
+
+                    <h3>⚠️ Budget Alert</h3>
+
+                    <p>
+                        Budget:
+                        ₹${budget.toFixed(2)}
+                    </p>
+
+                    <p>
+                        Expenses:
+                        ₹${totalExpense.toFixed(2)}
+                    </p>
+
+                    <p>
+                        Remaining:
+                        <strong>
+                            ₹${remaining.toFixed(2)}
+                        </strong>
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+        else{
+
+            result.innerHTML = `
+
+                <div class="success-box">
+
+                    <h3>✅ Budget is Safe</h3>
+
+                    <p>
+                        Budget:
+                        ₹${budget.toFixed(2)}
+                    </p>
+
+                    <p>
+                        Expenses:
+                        ₹${totalExpense.toFixed(2)}
+                    </p>
+
+                    <p>
+                        Remaining:
+                        <strong>
+                            ₹${remaining.toFixed(2)}
+                        </strong>
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        result.innerHTML =
+            "Unable to check budget.";
+
+    }
+
+}
+
+
+
+    /* TRIP HISTORY */
+
+async function loadTripHistory(){
+
+    const container =
+        document.getElementById("tripHistoryContainer");
+
+    if(!container){
+        return;
+    }
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+
+        container.innerHTML =
+            "<p>Please login first.</p>";
+
+        return;
+
+    }
+
+    container.innerHTML =
+        "<p>Loading trip history...</p>";
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getTripHistory.php?user_email=" +
+            encodeURIComponent(userEmail)
+        );
+
+        const data = await response.json();
+
+        let trips = data;
+
+        if(data.trips){
+            trips = data.trips;
+        }
+
+        if(!Array.isArray(trips)){
+            trips = [];
+        }
+
+        if(trips.length === 0){
+
+            container.innerHTML =
+                "<p>No trip history found.</p>";
+
+            return;
+
+        }
+
+        let html = "";
+
+        trips.forEach(function(trip){
+
+            html += `
+
+                <div class="trip-card">
+
+                    <h3>
+                        ✈️
+                        ${trip.from_place || ""}
+                        →
+                        ${trip.to_place || ""}
+                    </h3>
+
+                    <p>
+                        Start:
+                        ${trip.start_date || "-"}
+                    </p>
+
+                    <p>
+                        End:
+                        ${trip.end_date || "-"}
+                    </p>
+
+                    <p>
+                        Budget:
+                        ₹${trip.budget || 0}
+                    </p>
+
+                    <p>
+                        Status:
+                        <strong>
+                            Completed
+                        </strong>
+                    </p>
+
+                </div>
+
+            `;
+
+        });
+
+        container.innerHTML = html;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML =
+            "<p>Unable to load trip history.</p>";
+
+    }
+
+}
+
+ function showProfile() {
+
+    const section =
+        document.getElementById("profileSection");
+
+    if (!section) {
+        return;
+    }
+
+    /* Hide all sections */
+    document.querySelectorAll("section").forEach(function(sec) {
+        sec.classList.add("hidden");
+    });
+
+    /* Show Profile */
+    section.classList.remove("hidden");
+
+    /* Load profile data */
+    loadProfile();
+
+}
+
+
+   /* LOAD PROFILE */
+
+   async function loadProfile(){
+
+    const userEmail =
+        getCurrentUser();
+
+    if(!userEmail){
+        return;
+    }
+
+    const emailElement =
+        document.getElementById("profileEmail");
+
+    if(emailElement){
+
+        emailElement.value =
+            userEmail;
+
+    }
+
+    try{
+
+        const response = await fetch(
+            BASE_URL +
+            "getProfile.php?user_email=" +
+            encodeURIComponent(userEmail)
+        );
+
+        const data = await response.json();
+
+        const profile =
+            data.profile || data;
+
+        if(profile){
+
+            const nameElement =
+                document.getElementById("profileName");
+
+            if(nameElement){
+
+                nameElement.value =
+                    profile.name || "";
+
+            }
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+   /* UPDATE PROFILE */
+
+async function updateProfile(){
+
+    const name =
+        document.getElementById("profileName").value.trim();
+
+    const oldEmail =
+        getCurrentUser();
+
+    const newEmail =
+        document.getElementById("profileEmail").value.trim();
+
+    const result =
+        document.getElementById("profileResult");
+
+
+    if(!oldEmail){
+
+        result.innerHTML =
+            "Please login first.";
+
+        return;
+    }
+
+
+    if(name === ""){
+
+        result.innerHTML =
+            "Please enter your name.";
+
+        return;
+    }
+
+
+    if(newEmail === ""){
+
+        result.innerHTML =
+            "Please enter your email.";
+
+        return;
+    }
+
+
+    try{
+
+        const response = await fetch(
+            BASE_URL + "updateProfile.php",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    name:name,
+
+                    old_email:oldEmail,
+
+                    new_email:newEmail
+
+                })
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if(data.success){
+
+            localStorage.setItem(
+                "currentUser",
+                newEmail
+            );
+
+
+            result.innerHTML =
+                "Profile updated successfully.";
+
+
+            document.getElementById(
+                "profileEmail"
+            ).value = newEmail;
+
+        }
+        else{
+
+            result.innerHTML =
+                data.message ||
+                "Profile update failed.";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Update Profile Error:",
+            error
+        );
+
+        result.innerHTML =
+            "Profile update failed. Check backend.";
+
+    }
+
+}
+    
+    /* SIDEBAR NAVIGATION */
+
+function openHome(){
+showSection("homeSection");
+}
+
+function openRegister(){
+showSection("registerSection");
+}
+
+function openLogin(){
+showSection("loginSection");
+}
+
+function openCreateTrip(){
+showSection("createTripSection");
+}
+
+function openMyTrips(){
+showSection("myTripsSection");
+loadTrips();
+}
+
+function openBudgetEstimator(){
+showSection("budgetEstimatorSection");
+}
+
+function openBudgetAllocation(){
+showSection("budgetAllocationSection");
+}
+
+function openTransportation(){
+showSection("transportationSection");
+}
+
+function openExpenses(){
+showSection("expensesSection");
+loadExpenses();
+}
+
+function openExpenseAnalysis(){
+showSection("expenseAnalysisSection");
+loadExpenseAnalysis();
+}
+
+function openPlannedActual(){
+showSection("plannedActualSection");
+}
+
+function openExpenseDashboard(){
+showSection("expenseDashboardSection");
+loadExpenseDashboard();
+}
+
+function openBudgetAlerts(){
+showSection("budgetAlertsSection");
+}
+
+function openTripHistory(){
+showSection("tripHistorySection");
+loadTripHistory();
+}
+
+function openProfile(){
+showSection("profileSection");
+loadProfile();
+}
+
+
+/* LOGIN CHECK */
+
+function checkLogin(){
+
+const user =
+getCurrentUser();
+
+if(user){
+
+showSection("homeSection");
+
+}
+else{
+
+showSection("registerSection");
+
+}
+
+}
+
+
+/* PAGE LOAD */
+
+window.addEventListener(
+"DOMContentLoaded",
+function(){
+
+checkLogin();
+
+}
+);
+
+
+/* REFRESH DATA */
+
+function refreshTravelMate(){
+
+if(getCurrentUser()){
+
+loadTrips();
+
+loadExpenses();
+
+loadExpenseAnalysis();
+
+loadExpenseDashboard();
+
+loadTripHistory();
+
+loadProfile();
+
+}
+
+}
+/* FINAL SETUP */
+
+/* EDIT TRIP HIDDEN ID */
+
+window.addEventListener("DOMContentLoaded", function(){
+
+    const createSection =
+        document.getElementById("createTripSection");
+
+    if(
+        createSection &&
+        !document.getElementById("editTripId")
+    ){
+
+        const hiddenInput =
+            document.createElement("input");
+
+        hiddenInput.type = "hidden";
+        hiddenInput.id = "editTripId";
+        hiddenInput.value = "";
+
+        createSection.appendChild(hiddenInput);
+    }
+
+});
+
+
+/* SAVE OR UPDATE TRIP */
+
+const oldSaveTrip = window.saveTrip;
+
+window.saveTrip = async function(){
+
+    const editInput =
+        document.getElementById("editTripId");
+
+    if(
+        editInput &&
+        editInput.value !== ""
+    ){
+
+        await updateTrip();
+
+    }
+    else{
+
+        await oldSaveTrip();
+
+    }
+
+};
+
+
+/* AUTO REFRESH AFTER LOGIN */
+
+function refreshAfterLogin(){
+
+    if(!getCurrentUser()){
+        return;
+    }
+
+    loadTrips();
+    loadExpenses();
+    loadExpenseAnalysis();
+    loadExpenseDashboard();
+    loadTripHistory();
+    loadProfile();
+
+}
+
+
+/* CLEAR EDIT MODE */
+
+function clearEditMode(){
+
+    const editInput =
+        document.getElementById("editTripId");
+
+    if(editInput){
+        editInput.value = "";
+    }
+
+}
+
+
+/* PAGE READY */
+
+console.log("TravelMate loaded successfully.");
+
+loadExpenseDashboard();
+
+</script>
+
+</div>
+
+</body>
+
+</html>

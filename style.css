@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.trip-history {
+    width: 100%;
+    display: block;
+    clear: both;
+    margin-top: 20px;
+}
+
+.trip-history > div {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.trip-history h3 {
+    margin-top: 0;
+}
+
+/* Trip History */
+#tripHistory {
+    width: 100%;
+    margin: 20px 0;
+    padding: 20px;
+    box-sizing: border-box;
+    display: block;
+    clear: both;
+}
+
+#tripHistory h2 {
+    margin-bottom: 15px;
+}
+
+#tripHistory table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tripHistory th,
+#tripHistory td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+/* PROFESSIONAL TRAVELMATE NAVIGATION */
+
+nav {
+  width: 240px;
+  min-height: 100vh;
+  padding: 25px 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+}
+
+nav button {
+  width: 100%;
+  padding: 13px 15px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+nav button:hover {
+  background: #f1f5f9;
+  transform: translateX(3px);
+}
+
+body {
+  padding-left: 240px;
+  box-sizing: border-box;
+}
+
+/* PROFESSIONAL TRAVELMATE NAVIGATION */
+
+nav {
+  width: 240px;
+  min-height: 100vh;
+  padding: 25px 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+}
+
+nav button {
+  width: 100%;
+  padding: 13px 15px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+nav button:hover {
+  background: #f1f5f9;
+  transform: translateX(3px);
+}
+
+body {
+  padding-left: 240px;
+  box-sizing: border-box;
+}
